@@ -1,0 +1,42 @@
+import { Component, OnInit } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
+import { TareaService } from 'src/app/services/tarea.service';
+
+@Component({
+  selector: 'app-list-tareas',
+  templateUrl: './list-tareas.component.html',
+  styleUrls: ['./list-tareas.component.css']
+})
+
+export class ListTareasComponent implements OnInit {
+
+  tarea = '';
+  listTareas: any[] = [];
+
+  constructor(public tareaService: TareaService,
+    public toastr: ToastrService) { }
+
+  ngOnInit(): void {
+    this.tareaService.obtenerTareas();
+  }
+
+  agregarTarea() {
+    const tarea = {
+      nombre: this.tarea,
+      finalizada: false
+    };
+
+    this.listTareas.push(tarea);
+
+    this.tarea = '';
+  }
+
+  eliminarTarea(index: number) {
+    this.listTareas.splice(index, 1);
+  }
+
+  actualizarTarea(tarea, index) {
+    this.listTareas[index].finalizada = !tarea.finalizada;
+  }
+
+}
